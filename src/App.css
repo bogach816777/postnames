@@ -149,6 +149,3 @@ padding-bottom: 7px;
 .invalid::placeholder{
   color: red;
 }
-.newpost{
-  padding: 0px 32px;
-}

@@ -1,14 +1,14 @@
-// components/NewPost.js
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const NewPost = () => {
+const NewPost = ({ onPostAdded }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [text, setText] = useState('');
 
   const [isTouched, setIsTouched] = useState(false);
   const [isEmpty, setIsEmpty] = useState(true);
+
   const handleInputChange = (e) => {
     setIsTouched(true);
     const { name, value } = e.target;
@@ -27,7 +27,6 @@ const NewPost = () => {
     const form = e.target;
 
     if (!form.checkValidity()) {
-      console.log('Будь ласка, заповніть всі поля коректно.');
       return;
     }
     if (!title.trim() || !description.trim() || !text.trim()) {
@@ -35,19 +34,18 @@ const NewPost = () => {
     } else {
       setIsEmpty(false);
 
-      console.log('Форма успішно відправлена!');
     }
+
     try {
-      await axios.post('https://rest-api-production-fc73.up.railway.app/api/v1/posts', newPost);
-  
+      const response = await axios.post('https://rest-api-production-fc73.up.railway.app/api/v1/posts', newPost);
+      onPostAdded(response.data); 
+      setTitle('');
+      setDescription('');
+      setText('');
     } catch (error) {
-      console.error('Error creating post:', error);
     }
-   
-    setTitle('');
-    setDescription('');
-    setText('');
   };
+
 
   return (
     <div className='newpost'>
